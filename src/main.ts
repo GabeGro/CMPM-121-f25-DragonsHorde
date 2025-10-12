@@ -17,3 +17,10 @@ treasureButton.addEventListener("click", () => {
   treasure++;
   treasureCounter.textContent = Math.floor(treasure).toString();
 });
+
+//increment treasure counter +1 every second
+setInterval(followerOfferings, 1000);
+function followerOfferings() {
+  treasure++;
+  treasureCounter.textContent = Math.floor(treasure).toString();
+}
