@@ -1,11 +1,13 @@
 import "./style.css";
 
 let treasure: number = 0;
+const followers: number = 1;
 
 //step 1: added clickable button to gain treasure
 document.body.innerHTML = `
   <h1>Dragon's Horde</h1>
   <p>Treasure: <span id = "treasure">0</span></p>
+  <p>Treasure: <span id = "treasure">1</span></p>
   <button id = "increment">Take Treasure</button>
 `;
 
@@ -18,9 +20,20 @@ treasureButton.addEventListener("click", () => {
   treasureCounter.textContent = Math.floor(treasure).toString();
 });
 
-//increment treasure counter +1 every second
-setInterval(followerOfferings, 1000);
-function followerOfferings() {
-  treasure++;
+//get start time
+let lastTime: number = performance.now();
+function offerings(currentTime: number) {
+  //convert time elapsed to sec
+  const milliTime = currentTime - lastTime;
+  const secTime = milliTime / 1000;
+
+  //increment treasure by # of followers every second
+  treasure += followers * secTime;
   treasureCounter.textContent = Math.floor(treasure).toString();
+  lastTime = currentTime;
+
+  //loop back
+  requestAnimationFrame(offerings);
 }
+//kickstart loop
+requestAnimationFrame(offerings);
