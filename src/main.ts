@@ -15,22 +15,26 @@ let kidnapCost: number = princesses * costGrowth + 50;
 //step 1: added clickable button to gain treasure
 document.body.innerHTML = `
   <h1>Dragon's Horde</h1>
-  <p>Gather as much treasure as you can for your horde!</p>
+  <p>A dragon's only as good as their horde of gold. Gather as much treasure as you can for your pile!</p>
 
   <h3>Treasure: <span id = "treasure">0</span></h3>
-  <button id="increment" title="Obtain a piece of treasure!">Take Treasure</button>
+  <p>Take treasure manually.</p>
+  <button id="increment" title="What a pain.">Take Treasure</button>
 
   <h3>Followers: <span id = "followers">0</span></h3>
+  <p>Recruit followers to retrieve treasure for you. </p>
   <p>Cost: <span id = "followerCost">1</span> treasures</p>
-  <button id = "recruit">Recruit Follower</button>
+  <button id="recruit" title="Insolent fools. Make yourselves useful.">Recruit Follower</button>
 
   <h3>Towns: <span id = "towns">0</span></h3>
+  <p>Conquer a town and subjugate the inhabitants. They will donate their treasure, or pay the price.</p>
   <p>Cost: <span id="townCost">1</span> followers</p>
-  <button id = "conquer">Conquer Town</button>
+  <button id="conquer" title="More land to make my own.">Conquer Town</button>
 
   <h3>Princesses: <span id = "princesses">0</span></h3>
+  <p>Kidnap a princess and hold her hostage for ransom.</p>
   <p>Cost: <span id="kidnapCost">1</span> followers</p>
-  <button id = "kidnap">Kidnap Princess</button>
+  <button id="kidnap" title="Mortals. So easily manipulated.">Kidnap Princess</button>
 `;
 
 const treasureButton = document.getElementById("increment")!;
@@ -94,9 +98,9 @@ function offerings(currentTime: number) {
   followersCounter.textContent = Math.floor(followers).toString();
   townsCounter.textContent = Math.floor(towns).toString();
   princessCounter.textContent = Math.floor(princesses).toString();
-  followerCostCounter.textContent = followerCost.toString();
-  townCostCounter.textContent = townCost.toString();
-  kidnapCostCounter.textContent = kidnapCost.toString();
+  followerCostCounter.textContent = followerCost.toFixed(2).toString();
+  townCostCounter.textContent = townCost.toFixed(2).toString();
+  kidnapCostCounter.textContent = kidnapCost.toFixed(2).toString();
 
   //status of followers button
   if (treasure >= followerCost) {
