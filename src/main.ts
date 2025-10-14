@@ -1,17 +1,5 @@
 import "./style.css";
 
-let treasure: number = 0;
-const costGrowth: number = 1.05;
-
-let followers: number = 0;
-let followerCost: number = followers * costGrowth + 1;
-
-let towns: number = 0;
-let townCost: number = towns * costGrowth + 20;
-
-let princesses: number = 0;
-let kidnapCost: number = princesses * costGrowth + 50;
-
 //step 1: added clickable button to gain treasure
 document.body.innerHTML = `
   <h1>Dragon's Horde</h1>
@@ -37,49 +25,69 @@ document.body.innerHTML = `
   <button id="kidnap" title="Mortals. So easily manipulated.">Kidnap Princess</button>
 `;
 
-const treasureButton = document.getElementById("increment")!;
+let treasure: number = 0;
+const costGrowth: number = 1.05;
+
+interface Resources {
+  name: string;
+  count: number;
+  cost: number;
+  rate: number;
+  button: HTMLButtonElement;
+  countText: HTMLElement;
+  costText: HTMLElement;
+}
+
+const resourceList: Resources[] = [
+  {
+    name: "followers",
+    count: 0,
+    cost: 1,
+    rate: 0.2,
+    button: document.getElementById("recruit") as HTMLButtonElement,
+    countText: document.getElementById("followers")!,
+    costText: document.getElementById("followerCost")!,
+  },
+  {
+    name: "towns",
+    count: 0,
+    cost: 25,
+    rate: 2.5,
+    button: document.getElementById("conquer") as HTMLButtonElement,
+    countText: document.getElementById("towns")!,
+    costText: document.getElementById("townCost")!,
+  },
+  {
+    name: "princesses",
+    count: 0,
+    cost: 50,
+    rate: 5,
+    button: document.getElementById("kidnap") as HTMLButtonElement,
+    countText: document.getElementById("princesses")!,
+    costText: document.getElementById("kidnapCost")!,
+  },
+];
+
+const treasureButton = document.getElementById(
+  "increment",
+) as HTMLButtonElement;
 const treasureCounter = document.getElementById("treasure")!;
-
-const followersButton = document.getElementById("recruit") as HTMLButtonElement;
-const followersCounter = document.getElementById("followers")!;
-const followerCostCounter = document.getElementById("followerCost")!;
-followersButton.disabled = true;
-
-const conquerButton = document.getElementById("conquer") as HTMLButtonElement;
-const townsCounter = document.getElementById("towns")!;
-const townCostCounter = document.getElementById("townCost")!;
-conquerButton.disabled = true;
-
-const kidnapButton = document.getElementById("kidnap") as HTMLButtonElement;
-const princessCounter = document.getElementById("princesses")!;
-const kidnapCostCounter = document.getElementById("kidnapCost")!;
-kidnapButton.disabled = true;
 
 //updates treasure counter on button clicked
 treasureButton.addEventListener("click", () => {
   treasure++;
 });
 
-//gain follower for 10 treasure
-followersButton.addEventListener("click", () => {
-  followers++;
-  treasure -= followerCost;
-  followerCost *= costGrowth;
-});
+//buttons to buy upgrades
+for (let i = 0; i < resourceList.length; i++) {
+  resourceList[i].button.disabled = true;
 
-//conquer town for 10 followers
-conquerButton.addEventListener("click", () => {
-  towns++;
-  followers -= townCost;
-  townCost *= costGrowth;
-});
-
-//kidnap princess for 25 followers
-kidnapButton.addEventListener("click", () => {
-  princesses++;
-  followers -= kidnapCost;
-  kidnapCost *= costGrowth;
-});
+  resourceList[i].button.addEventListener("click", () => {
+    resourceList[i].count++;
+    treasure -= resourceList[i].cost;
+    resourceList[i].cost *= costGrowth;
+  });
+}
 
 //get start time
 let lastTime: number = performance.now();
@@ -89,38 +97,30 @@ function offerings(currentTime: number) {
   const secTime = milliTime / 1000;
 
   //increment treasure
-  treasure += followers / 5 * secTime;
-  treasure += towns * 3 * secTime;
-  treasure += princesses * 5 * secTime;
+  for (let i = 0; i < resourceList.length; i++) {
+    treasure += resourceList[i].count * resourceList[i].rate * secTime;
+  }
 
-  //update html
+  //update html for resource count
   treasureCounter.textContent = Math.floor(treasure).toString();
-  followersCounter.textContent = Math.floor(followers).toString();
-  townsCounter.textContent = Math.floor(towns).toString();
-  princessCounter.textContent = Math.floor(princesses).toString();
-  followerCostCounter.textContent = followerCost.toFixed(2).toString();
-  townCostCounter.textContent = townCost.toFixed(2).toString();
-  kidnapCostCounter.textContent = kidnapCost.toFixed(2).toString();
+  for (let i = 0; i < resourceList.length; i++) {
+    resourceList[i].countText.textContent = Math.floor(resourceList[i].count)
+      .toString();
+  }
+
+  //update html for cost
+  for (let i = 0; i < resourceList.length; i++) {
+    resourceList[i].costText.textContent = resourceList[i].cost.toFixed(2)
+      .toString();
+  }
 
   //status of followers button
-  if (treasure >= followerCost) {
-    followersButton.disabled = false;
-  } else {
-    followersButton.disabled = true;
-  }
-
-  //enable conquer button
-  if (followers >= townCost) {
-    conquerButton.disabled = false;
-  } else {
-    conquerButton.disabled = true;
-  }
-
-  //enable kidnap button
-  if (followers >= kidnapCost) {
-    kidnapButton.disabled = false;
-  } else {
-    kidnapButton.disabled = true;
+  for (let i = 0; i < resourceList.length; i++) {
+    if (treasure >= resourceList[i].cost) {
+      resourceList[i].button.disabled = false;
+    } else {
+      resourceList[i].button.disabled = true;
+    }
   }
 
   //loop back
