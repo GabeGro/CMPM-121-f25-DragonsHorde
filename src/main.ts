@@ -10,19 +10,29 @@ document.body.innerHTML = `
   <button id="increment" title="What a pain.">Take Treasure</button>
 
   <h3>Followers: <span id = "followers">0</span></h3>
-  <p>Recruit followers to retrieve treasure for you. </p>
+  <p>Recruit followers to retrieve treasure for you. (0.5t/sec) </p>
   <p>Cost: <span id = "followerCost">1</span> treasures</p>
   <button id="recruit" title="Insolent fools. Make yourselves useful.">Recruit Follower</button>
 
   <h3>Towns: <span id = "towns">0</span></h3>
-  <p>Conquer a town and subjugate the inhabitants. They will donate their treasure, or pay the price.</p>
-  <p>Cost: <span id="townCost">1</span> followers</p>
-  <button id="conquer" title="More land to make my own.">Conquer Town</button>
+  <p>Plunder a town and subjugate the inhabitants. (2.5t/sec) </p>
+  <p>Cost: <span id="townCost">1</span> treasure</p>
+  <button id="plunder" title="They will shower me with offerings, or pay the price.">Plunder Town</button>
 
   <h3>Princesses: <span id = "princesses">0</span></h3>
-  <p>Kidnap a princess and hold her hostage for ransom.</p>
-  <p>Cost: <span id="kidnapCost">1</span> followers</p>
+  <p>Kidnap a princess and hold her hostage for ransom. (5t/sec) </p>
+  <p>Cost: <span id="kidnapCost">1</span> treasures</p>
   <button id="kidnap" title="Mortals. So easily manipulated.">Kidnap Princess</button>
+
+  <h3>Alchemists: <span id = "alchemists">0</span></h3>
+  <p>Hire an alchemist to create gold for you. (10t/sec) </p>
+  <p>Cost: <span id="hireCost">1</span> treasures</p>
+  <button id="hire" title="Everyone has a price.">Hire Alchemist</button>
+
+  <h3>Wars Waged: <span id = "wars">0</span></h3>
+  <p>Wage war against an enemy kingdom. (50t/sec) </p>
+  <p>Cost: <span id="warCost">1</span> treasures</p>
+  <button id="wage" title="Shame.">Wage War</button>
 `;
 
 let treasure: number = 0;
@@ -43,7 +53,7 @@ const resourceList: Resources[] = [
     name: "followers",
     count: 0,
     cost: 1,
-    rate: 0.2,
+    rate: 0.5,
     button: document.getElementById("recruit") as HTMLButtonElement,
     countText: document.getElementById("followers")!,
     costText: document.getElementById("followerCost")!,
@@ -51,20 +61,38 @@ const resourceList: Resources[] = [
   {
     name: "towns",
     count: 0,
-    cost: 25,
+    cost: 100,
     rate: 2.5,
-    button: document.getElementById("conquer") as HTMLButtonElement,
+    button: document.getElementById("plunder") as HTMLButtonElement,
     countText: document.getElementById("towns")!,
     costText: document.getElementById("townCost")!,
   },
   {
     name: "princesses",
     count: 0,
-    cost: 50,
+    cost: 250,
     rate: 5,
     button: document.getElementById("kidnap") as HTMLButtonElement,
     countText: document.getElementById("princesses")!,
     costText: document.getElementById("kidnapCost")!,
+  },
+  {
+    name: "alchemists",
+    count: 0,
+    cost: 500,
+    rate: 10,
+    button: document.getElementById("hire") as HTMLButtonElement,
+    countText: document.getElementById("alchemists")!,
+    costText: document.getElementById("hireCost")!,
+  },
+  {
+    name: "war",
+    count: 0,
+    cost: 1000,
+    rate: 50,
+    button: document.getElementById("wage") as HTMLButtonElement,
+    countText: document.getElementById("wars")!,
+    costText: document.getElementById("warCost")!,
   },
 ];
 
