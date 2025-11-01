@@ -119,12 +119,18 @@ for (let i = 0; i < resourceList.length; i++) {
 
 //get start time
 let lastTime: number = performance.now();
-function offerings(currentTime: number) {
+
+//Parameters: the time, in millseconds, since the program has started
+//Purpose: the functions updates a couple different things every second by subtracting the time when the function was called last by the time since the program has started.
+//It calculates the amount of treasure based on the number of upgrades and their respective rate. It then updates the HTML display for the upgrade count and the treasure count.
+//It also updates the HTML for the cost of upgrades, as well as updating the "clickable" status of the upgrades' buttons.
+//After all this is updated, it calls itself to restart the loop.
+function update(currentTime: number) {
   //convert time elapsed to sec
   const milliTime = currentTime - lastTime;
   const secTime = milliTime / 1000;
 
-  //increment treasure
+  //increment treasure counter
   for (let i = 0; i < resourceList.length; i++) {
     treasure += resourceList[i].count * resourceList[i].rate * secTime;
   }
@@ -153,7 +159,7 @@ function offerings(currentTime: number) {
 
   //loop back
   lastTime = currentTime;
-  requestAnimationFrame(offerings);
+  requestAnimationFrame(update);
 }
 //kickstart loop
-requestAnimationFrame(offerings);
+requestAnimationFrame(update);
