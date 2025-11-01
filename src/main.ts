@@ -106,7 +106,7 @@ treasureButton.addEventListener("click", () => {
   treasure++;
 });
 
-//buttons to buy upgrades
+//add event listeners for all buttons
 for (let i = 0; i < resourceList.length; i++) {
   resourceList[i].button.disabled = true;
 
@@ -130,33 +130,29 @@ function update(currentTime: number) {
   const milliTime = currentTime - lastTime;
   const secTime = milliTime / 1000;
 
-  //increment treasure counter
-  for (let i = 0; i < resourceList.length; i++) {
-    treasure += resourceList[i].count * resourceList[i].rate * secTime;
-  }
-
-  //update html for resource count
+  //update treasure HTML
   treasureCounter.textContent = Math.floor(treasure).toString();
+
+  //update all HTML displays and track status of buttons
   for (let i = 0; i < resourceList.length; i++) {
+    //increment treasure counter
+    treasure += resourceList[i].count * resourceList[i].rate * secTime;
+
+    //update html for resource count
     resourceList[i].countText.textContent = Math.floor(resourceList[i].count)
       .toString();
-  }
 
-  //update html for cost
-  for (let i = 0; i < resourceList.length; i++) {
+    //update html for cost
     resourceList[i].costText.textContent = resourceList[i].cost.toFixed(2)
       .toString();
-  }
 
-  //status of followers button
-  for (let i = 0; i < resourceList.length; i++) {
+    //status of followers button
     if (treasure >= resourceList[i].cost) {
       resourceList[i].button.disabled = false;
     } else {
       resourceList[i].button.disabled = true;
     }
   }
-
   //loop back
   lastTime = currentTime;
   requestAnimationFrame(update);
