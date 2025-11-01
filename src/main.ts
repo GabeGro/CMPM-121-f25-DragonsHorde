@@ -35,7 +35,7 @@ document.body.innerHTML = `
   <button id="wage" title="Shame.">Wage War</button>
 `;
 
-let treasure: number = 0;
+let treasureCount: number = 0;
 const costGrowth: number = 1.05;
 
 interface Resources {
@@ -44,8 +44,8 @@ interface Resources {
   cost: number;
   rate: number;
   button: HTMLButtonElement;
-  countText: HTMLElement;
-  costText: HTMLElement;
+  countDisplay: HTMLElement;
+  costDisplay: HTMLElement;
 }
 
 const resourceList: Resources[] = [
@@ -55,8 +55,8 @@ const resourceList: Resources[] = [
     cost: 1,
     rate: 0.5,
     button: document.getElementById("recruit") as HTMLButtonElement,
-    countText: document.getElementById("followers")!,
-    costText: document.getElementById("followerCost")!,
+    countDisplay: document.getElementById("followers")!,
+    costDisplay: document.getElementById("followerCost")!,
   },
   {
     name: "towns",
@@ -64,8 +64,8 @@ const resourceList: Resources[] = [
     cost: 100,
     rate: 2.5,
     button: document.getElementById("plunder") as HTMLButtonElement,
-    countText: document.getElementById("towns")!,
-    costText: document.getElementById("townCost")!,
+    countDisplay: document.getElementById("towns")!,
+    costDisplay: document.getElementById("townCost")!,
   },
   {
     name: "princesses",
@@ -73,8 +73,8 @@ const resourceList: Resources[] = [
     cost: 250,
     rate: 5,
     button: document.getElementById("kidnap") as HTMLButtonElement,
-    countText: document.getElementById("princesses")!,
-    costText: document.getElementById("kidnapCost")!,
+    countDisplay: document.getElementById("princesses")!,
+    costDisplay: document.getElementById("kidnapCost")!,
   },
   {
     name: "alchemists",
@@ -82,8 +82,8 @@ const resourceList: Resources[] = [
     cost: 500,
     rate: 10,
     button: document.getElementById("hire") as HTMLButtonElement,
-    countText: document.getElementById("alchemists")!,
-    costText: document.getElementById("hireCost")!,
+    countDisplay: document.getElementById("alchemists")!,
+    costDisplay: document.getElementById("hireCost")!,
   },
   {
     name: "war",
@@ -91,8 +91,8 @@ const resourceList: Resources[] = [
     cost: 1000,
     rate: 50,
     button: document.getElementById("wage") as HTMLButtonElement,
-    countText: document.getElementById("wars")!,
-    costText: document.getElementById("warCost")!,
+    countDisplay: document.getElementById("wars")!,
+    costDisplay: document.getElementById("warCost")!,
   },
 ];
 
@@ -103,7 +103,7 @@ const treasureCounter = document.getElementById("treasure")!;
 
 //updates treasure counter on button clicked
 treasureButton.addEventListener("click", () => {
-  treasure++;
+  treasureCount++;
 });
 
 //add event listeners for all buttons
@@ -112,7 +112,7 @@ for (let i = 0; i < resourceList.length; i++) {
 
   resourceList[i].button.addEventListener("click", () => {
     resourceList[i].count++;
-    treasure -= resourceList[i].cost;
+    treasureCount -= resourceList[i].cost;
     resourceList[i].cost *= costGrowth;
   });
 }
@@ -131,23 +131,23 @@ function update(currentTime: number) {
   const secTime = milliTime / 1000;
 
   //update treasure HTML
-  treasureCounter.textContent = Math.floor(treasure).toString();
+  treasureCounter.textContent = Math.floor(treasureCount).toString();
 
   //update all HTML displays and track status of buttons
   for (let i = 0; i < resourceList.length; i++) {
     //increment treasure counter
-    treasure += resourceList[i].count * resourceList[i].rate * secTime;
+    treasureCount += resourceList[i].count * resourceList[i].rate * secTime;
 
     //update html for resource count
-    resourceList[i].countText.textContent = Math.floor(resourceList[i].count)
+    resourceList[i].countDisplay.textContent = Math.floor(resourceList[i].count)
       .toString();
 
     //update html for cost
-    resourceList[i].costText.textContent = resourceList[i].cost.toFixed(2)
+    resourceList[i].costDisplay.textContent = resourceList[i].cost.toFixed(2)
       .toString();
 
     //status of followers button
-    if (treasure >= resourceList[i].cost) {
+    if (treasureCount >= resourceList[i].cost) {
       resourceList[i].button.disabled = false;
     } else {
       resourceList[i].button.disabled = true;
