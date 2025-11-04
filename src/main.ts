@@ -1,9 +1,12 @@
+import tapestry from "./DragonTapestry.png";
 import "./style.css";
 
 //step 1: added clickable button to gain treasure
 document.body.innerHTML = `
   <h1>Dragon's Horde</h1>
   <p>A dragon's only as good as their horde of gold. Gather as much treasure as you can for your pile!</p>
+
+  <img src="${tapestry}" class="icon" id="icon" />
 
   <h3>Treasure: <span id = "treasure">0</span></h3>
   <p>Take treasure manually.</p>
